@@ -24,7 +24,7 @@ def cLookup(targetN, carrier=""):
     return carrier
 
 class SMS:
-    def __init__(self, selfUser, selfPass , targetN, carrier="", targetNF="", lookupYN=""):
+    def __init__(self, selfUser, selfPass , targetN, lookupYN="", cAdd="", carrier="", targetNF=""):
         targetN = str(targetN)
         self.selfUser = selfUser
         self.selfPass = selfPass
