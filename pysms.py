@@ -30,7 +30,7 @@ class SMS:
         self.selfPass = selfPass
         self.targetN = targetN
         self.context =  ssl.create_default_context()
-        if (lookupYN == "true" or lookupYN == "True" or lookupYN == "yes" or lookupYN == "Yes"):
+        if (lookupYN == "true" or lookupYN == "True" or lookupYN == "yes" or lookupYN == "Yes" or lookupYN == "y" or lookupYN == "Y"):
             cLookup(self.targetN)
         else:
             cAdd = input("Enter SMS string for carrier including @ : ")
