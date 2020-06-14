@@ -13,9 +13,9 @@ Prompts if user wishes to use carrier lookup to find carrier extension to send m
 JohnDoe = SMS("test-email@gmail.com", "TestPassword123", "3334567890", "No", "@txt.att.net")<br>
 Pre-fills with string for SMS with carrier, bypasses carrier lookup 
 
-JohnDoe.send()
+JohnDoe.send()<br>
 Prompts for message, sends
 
-JohnDoe.send("example")
+JohnDoe.send("example")<br>
 Sends with message provided in call
 
