@@ -24,7 +24,7 @@ def cLookup(targetN, carrier=""):
     return carrier
 
 class SMS:
-    def __init__(self, selfUser, selfPass , targetN, lookupYN="", cAdd="", carrier="", targetNF=""):
+    def __init__(self, selfUser, selfPass , targetN, lookupYN="", cAdd="", targetNF="", carrier="", fillin=0):
         targetN = str(targetN)
         self.selfUser = selfUser
         self.selfPass = selfPass
@@ -32,8 +32,8 @@ class SMS:
         self.context =  ssl.create_default_context()
         if (lookupYN == "true" or lookupYN == "True" or lookupYN == "yes" or lookupYN == "Yes" or lookupYN == "y" or lookupYN == "Y"):
             cLookup(self.targetN)
-        else:
-            cAdd = input("Enter SMS string for carrier including @ : ")
+        #elif():
+        #    cAdd = input("Enter SMS string for carrier including @ : ")
         if (carrier == "AT&T Mobility LLC"):
             cAdd = "@txt.att.net"
         elif (carrier == ""):
@@ -71,10 +71,13 @@ class SMS:
             selfUser = input("Enter Your Email Including @ : "),
             selfPass = input("Enter Your Password : "),
             targetN = input("Enter Target Phone Number : "),
-            targetNF = ""
+            cAdd = input("(leave blank if unknown)\nEnter SMS string for carrier including @ : "),
+            targetNF = "",
+            fillin = 1
         ) 
-    def send(self):
+    def send(self, targetM):
         with smtplib.SMTP_SSL(self.smtp, self.port, context=self.context) as server:
-            targetM = input("Enter Desired Message : ")
+            if(targetM == ""):
+                targetM = input("Enter Desired Message : ")
             server.login(self.selfUser, self.selfPass)
             server.sendmail(self.selfUser, self.targetNF, targetM)
