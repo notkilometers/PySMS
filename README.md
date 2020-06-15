@@ -10,8 +10,8 @@ Will prompt users to fill in necessary variables, including recipient phone numb
 JohnDoe = Email.getdata()  
 Will prompt users to fill in necessary variables, including recipient email, sender's email & password.
 
-JohnDoe = SMS("test-email@gmail.com", "TestPassword123", "3334567890", "No", "@txt.att.net")<br>
-Pre-fills with string for SMS with carrier, bypasses carrier lookup 
+JohnDoe = SMS("test-email@gmail.com", "TestPassword123", "3334567890", "@txt.att.net")<br>
+Pre-fills with string for SMS with carrier
 
 JohnDoe = Email("test-email@gmail.com", "TestPassword123", "test-email2@gmail.com")<br>
 Sets up email variable with login information @ recipient email
