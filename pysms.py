@@ -49,7 +49,7 @@ def sendSetup(self, selfUser):
         exit()
             
 class SMS:
-    def __init__(self, selfUser, selfPass , targetN, lookupYN="", cAdd="", targetNF="", carrier="", fillin=0):
+    def __init__(self, selfUser, selfPass , targetN, cAdd="", targetNF="", lookupYN="", carrier="", fillin=0):
         targetN = str(targetN)
         self.selfUser = selfUser
         self.selfPass = selfPass
@@ -91,20 +91,17 @@ class Email:
         self.targetEmail = targetEmail
         sendSetup(self, self.selfUser)
         
-
     def send(self, targetM):
         with smtplib.SMTP_SSL(self.smtp, self.port, context=self.context) as server:
             if(targetM == ""):
                 targetM = input("Enter Desired Message : ")
             server.login(self.selfUser, self.selfPass)
             server.sendmail(self.selfUser, self.targetEmail, targetM)
+            
     @classmethod
     def getdata(cls):
         return cls(
-            lookupYN = input("Look Up Carrier for Phone Number? "),
             selfUser = input("Enter Your Email Including @ : "),
             selfPass = input("Enter Your Password : "),
-            targetN = input("Enter Target Phone Number : "),
-            cAdd = input("(leave blank if unknown)\nEnter SMS string for carrier including @ : "),
-            targetNF = ""
+            targetEmail = input("Enter Target Email : ")
         ) 
