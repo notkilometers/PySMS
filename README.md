@@ -1,24 +1,27 @@
-# PySMS
+# Pysms
 
-Python SMS and Email sending utility via SMTP, including phone carrier lookup if desired
+Python sms and email sending utility via SMTP, including phone carrier lookup if desired<br>
 
-Usage Examples:
+Usage Examples:<br>
 
-JohnDoe = SMS.getdata()  
-Will prompt users to fill in necessary variables, including recipient phone number, sender's email & password.
+JaneDoe = login("JaneDoe@gmail.com", "SecurePassword")<br>
+Fills in login info under named variable<br>
 
-JohnDoe = Email.getdata()  
-Will prompt users to fill in necessary variables, including recipient email, sender's email & password.
+JohnDoe = sms.getdata()  <br>
+Will prompt users to fill in necessary variables, including recipient phone number, and carrier SMS string if known.<br>
 
-JohnDoe = SMS("test-email@gmail.com", "TestPassword123", "3334567890", "@txt.att.net")<br>
-Pre-fills with string for SMS with carrier
+JohnDoe = email.getdata()  <br>
+Will prompt users to fill in recipient email.<br>
 
-JohnDoe = Email("test-email@gmail.com", "TestPassword123", "test-email2@gmail.com")<br>
-Sets up email variable with login information @ recipient email
+JohnDoe = sms("3334567890", "@txt.att.net")<br>
+Sets up email variable with phone number and carrier SMS string.<br>
 
-JohnDoe.send()<br>
-Prompts for message, sends
+JohnDoe = email("test-email2@gmail.com")<br>
+Sets up email variable with recipient email<br>
 
-JohnDoe.send("example")<br>
-Sends with message provided in function call
+JohnDoe.send(JaneDoe)<br>
+Prompts for message, sends<br>
+
+JohnDoe.send(JaneDoe, "example")<br>
+Sends with message provided in function call<br>
 
