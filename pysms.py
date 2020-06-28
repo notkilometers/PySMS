@@ -1,7 +1,7 @@
 import smtplib, ssl, json, requests
+
 # doesnt sanatize input but thats not my problem
 # only supports ATT due to not having enough numbers to compare to API output
-# adding carrier lookup with numverify api
 
 api = "" # put api key here, get from numverify.com for 250 free lookups
 
@@ -15,7 +15,7 @@ def cLookup(targetN, carrier=""):
     print(linetype)
     linetype = linetype.split("'")[0]
     if (linetype == "landline"):
-        print("Number type not supported (landline)")
+        print("Number type not supported for lookup(reported as landline)")
     else:
         print("not landline, continuing")
     carrier = resp.split("carrier': '")[1]
@@ -23,80 +23,57 @@ def cLookup(targetN, carrier=""):
     print(carrier)
     return carrier
 
-def sendSetup(self, selfUser):
-    self.context =  ssl.create_default_context()
-    smtpString = self.selfUser.split("@")[1]
-    if (smtpString == "gmail.com"):
-        self.smtp = "smtp.gmail.com"
-        self.port = 465 # ssl
-    elif(smtpString == "outlook.com"):
-        self.smtp = "smtp-mail.outlook.com"
-        self.port = 587 # tls
-    elif (smtpString == "yahoo.com"):
-        self.smtp = "smtp.mail.yahoo.com"
-        self.port = 465 # ssl
-    elif (smtpString == "icloud.com"):
-        self.smtp = "smtp.mail.me.com"
-        self.port = 587 # tls
-    elif (smtpString == "aol.com"):
-        self.smtp = "smtp.aol.com"
-        self.port = 465 # ssl
-    elif (smtpString == "mail.com"):
-        self.smtp = "smtp.mail.com"
-        self.port = 587 #tls
-    else:
-        print("Email host not supported yet, existing.")
-        exit()
-            
-class SMS:
-    def __init__(self, selfUser, selfPass , targetN, cAdd="", targetNF="", lookupYN="", carrier="", fillin=0):
-        targetN = str(targetN)
-        self.selfUser = selfUser
-        self.selfPass = selfPass
-        self.targetN = targetN
-        if (lookupYN == "true" or lookupYN == "True" or lookupYN == "yes" or lookupYN == "Yes" or lookupYN == "y" or lookupYN == "Y"):
-            cLookup(self.targetN)
-        #elif():
-        #    cAdd = input("Enter SMS string for carrier including @ : ")
-        if (carrier == "AT&T Mobility LLC"):
-            cAdd = "@txt.att.net"
-        elif (carrier == ""):
+def setupcarrier(self):
+        if (self.carrier == "AT&T Mobility LLC"):
+            self.cAdd = "@txt.att.net"
+        elif (self.carrier == ""):
             pass
         else:
             cAdd = "@txt.att.net" # default to using most common carrier
-        targetNF = targetN + cAdd
+        targetNF = self.targetN + self.cAdd
         self.targetNF = targetNF
-        sendSetup(self, self.selfUser)
-    @classmethod
-    def getdata(cls):
-        return cls(
-            lookupYN = input("Look Up Carrier for Phone Number? "),
-            selfUser = input("Enter Your Email Including @ : "),
-            selfPass = input("Enter Your Password : "),
-            targetN = input("Enter Target Phone Number : "),
-            cAdd = input("(leave blank if unknown)\nEnter SMS string for carrier including @ : "),
-            targetNF = ""
-        ) 
-    def send(self, targetM):
-        with smtplib.SMTP_SSL(self.smtp, self.port, context=self.context) as server:
-            if(targetM == ""):
-                targetM = input("Enter Desired Message : ")
-            server.login(self.selfUser, self.selfPass)
-            server.sendmail(self.selfUser, self.targetNF, targetM)
-
-class Email:
-    def __init__(self, selfUser,  selfPass, targetEmail):
-        self.selfUser = selfUser
-        self.selfPass = selfPass
-        self.targetEmail = targetEmail
-        sendSetup(self, self.selfUser)
         
-    def send(self, targetM):
-        with smtplib.SMTP_SSL(self.smtp, self.port, context=self.context) as server:
+def sendSetup(self, login):
+    login.context =  ssl.create_default_context()
+    smtpString = login.email.split("@")[1]
+    if (smtpString == "gmail.com"):
+        login.smtp = "smtp.gmail.com"
+        login.port = 465 # ssl
+    elif(smtpString == "outlook.com"):
+        login.smtp = "smtp-mail.outlook.com"
+        login.port = 587 # tls
+    elif (smtpString == "yahoo.com"):
+        login.smtp = "smtp.mail.yahoo.com"
+        login.port = 465 # ssl
+    elif (smtpString == "icloud.com"):
+        login.smtp = "smtp.mail.me.com"
+        login.port = 587 # tls
+    elif (smtpString == "aol.com"):
+        login.smtp = "smtp.aol.com"
+        login.port = 465 # ssl
+    elif (smtpString == "mail.com"):
+        login.smtp = "smtp.mail.com"
+        login.port = 587 #tls
+    else:
+        print("Email host not supported yet, existing.")
+        exit()
+
+class login:
+    def __init__(self, email, password):
+        self.email = email
+        self.password = password
+
+class email:
+    def __init__(self, targetEmail):
+        self.targetEmail = targetEmail
+        
+    def send(self, login, targetM):
+        sendSetup(self, login)
+        with smtplib.SMTP_SSL(login.smtp, login.port, context=login.context) as server:
             if(targetM == ""):
                 targetM = input("Enter Desired Message : ")
-            server.login(self.selfUser, self.selfPass)
-            server.sendmail(self.selfUser, self.targetEmail, targetM)
+            server.login(login.email, login.password)
+            server.sendmail(login.email, self.targetEmail, targetM)
             
     @classmethod
     def getdata(cls):
@@ -104,4 +81,28 @@ class Email:
             selfUser = input("Enter Your Email Including @ : "),
             selfPass = input("Enter Your Password : "),
             targetEmail = input("Enter Target Email : ")
+        )
+
+class sms:
+    def __init__(self, targetN, cAdd=""):
+        self.carrier = ""
+        targetN = str(targetN)
+        self.targetN = targetN
+        self.cAdd = cAdd
+
+    @classmethod
+    def getdata(cls):
+        return cls(
+            targetN = input("Enter Target Phone Number : "),
+            cAdd = input("(leave blank if unknown)\nEnter SMS string for carrier including @ : ")
         ) 
+    def send(self, login, targetM):
+        if (self.cAdd == "" ):
+            self.carrier = cLookup(self.targetN)
+        setupcarrier(self)
+        sendSetup(self, login)
+        with smtplib.SMTP_SSL(login.smtp, login.port, context=login.context) as server:
+            if(targetM == ""):
+                targetM = input("Enter Desired Message : ")
+            server.login(login.email, login.password)
+            server.sendmail(login.email, self.targetNF, targetM)
