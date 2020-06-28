@@ -1,6 +1,6 @@
 # Pysms
 
-Python sms and email sending utility via SMTP, including phone carrier lookup if desired<br>
+Python SMS and email sending utility via SMTP, including phone carrier lookup if desired<br>
 
 Usage Examples:<br>
 
