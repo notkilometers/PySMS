@@ -1,5 +1,5 @@
-# Pysms
-
+# PySMS
+---converting to gui tool soon---
 Python SMS and email sending utility via SMTP, including phone carrier lookup if desired<br>
 
 Usage Examples:<br>
